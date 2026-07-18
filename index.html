@@ -841,7 +841,7 @@
   });
 
   function checkSSOStatus() {
-    // 若是登出剛回來，清掉網址參數後繼續走登入流程
+    // 若是登出剛回來，網址會有 _logout 或 _relogin，仍然要導向 SSO 登入頁
     const _url = new URL(window.location.replace);
     if (_url.searchParams.has('_logout')) {
       console.log("偵測到登出回跳，準備導向登入頁");
