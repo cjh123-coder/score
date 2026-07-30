@@ -479,15 +479,21 @@
 
       function handleLogout() {
     try { clearTimeout(idleTimer); } catch(e) {}
+    // 嘗試通知後端刪除 Session
+    try {
+      const sid = localStorage.getItem('sysSessionId');
+      if (sid) {
+        google.script.run.withFailureHandler(()=>{}).logoutSession(sid);
+      }
+    } catch(e) {}
     localStorage.removeItem('sysUserData');
+    localStorage.removeItem('sysSessionId');
     localStorage.removeItem('sysYear');
     localStorage.removeItem('sysSemester');
     localStorage.removeItem('sysExamType');
     localStorage.removeItem('sysLastActive'); 
     
-    // 【v3 定版】絕對不自動跳轉到 script.google.com
-    // 改成顯示手動重新登入按鈕，使用者主動點擊才不會被 X-Frame-Options 擋
-    showTerminalScreen("✅ 您已安全登出", "系統暫存紀錄已徹底清除。<br>為確保資訊安全，請重新登入或關閉此分頁。", true);
+    showTerminalScreen("✅ 您已安全登出", "系統暫存紀錄已徹底清除，後端 Session 已註銷。<br>為確保資訊安全，請重新登入或關閉此分頁。", true);
   }
 
   function fetchLiveReport() {
@@ -818,10 +824,13 @@
             const failureCb = target._onFailure;
             target._onSuccess = null; target._onFailure = null;
 
+            // 【安全性修補】每次請求都帶上 sessionId
+            const sessionId = localStorage.getItem('sysSessionId') || "";
+            const securePayload = { ...payload, sessionId: sessionId };
             fetch(GAS_API_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify(payload)
+              body: JSON.stringify(securePayload)
             })
             .then(res => res.json())
             .then(result => {
@@ -856,6 +865,7 @@
         localStorage.removeItem('sysYear');
         localStorage.removeItem('sysSemester');
         localStorage.removeItem('sysExamType');
+        localStorage.removeItem('sysSessionId');
         localStorage.removeItem('sysLastActive');
         // 【修正】離線逾時不再跳轉到 script.google.com，直接顯示終端畫面，避免 拒絕連線
         showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已離線閒置超過 5 分鐘，系統已將您登出。<br>請重新登入以繼續使用。", true);
@@ -880,6 +890,7 @@
           if (res.success) {
             let userData = res.userData;
             localStorage.setItem('sysUserData', JSON.stringify(userData));
+            if (res.sessionId) localStorage.setItem('sysSessionId', res.sessionId);
             localStorage.setItem('sysYear', currentTerm.year);
             localStorage.setItem('sysSemester', currentTerm.semester);
             window.location.replace(CURRENT_APP_URL);
@@ -913,6 +924,7 @@
       localStorage.removeItem('sysYear');
       localStorage.removeItem('sysSemester');
       localStorage.removeItem('sysExamType');
+      localStorage.removeItem('sysSessionId');
       localStorage.removeItem('sysLastActive'); 
       
       // 【v3 定版】閒置逾時也改手動按鈕，不自動跳轉
