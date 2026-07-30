@@ -673,10 +673,18 @@
   }
 
   function loadDeductionList() {
-    google.script.run.withSuccessHandler(data => {
-      if (data.length > 1) { localDeductions = data.slice(1); } else { localDeductions = []; }
-      renderDeductionTable();
-    }).getDeductionList();
+    google.script.run
+      .withSuccessHandler(data => {
+        if (data.length > 1) { localDeductions = data.slice(1); } else { localDeductions = []; }
+        renderDeductionTable();
+      })
+      .withFailureHandler(err => {
+        // 捕獲錯誤並顯示給管理員
+        showAlert('讀取扣分名單失敗：' + err);
+        // 將卡住的「讀取中...」替換為錯誤提示
+        document.getElementById('deductionTableBody').innerHTML = '<tr><td colspan="6" style="color: #e74c3c; font-weight: bold;">❌ 資料讀取失敗，請重新整理頁面</td></tr>';
+      })
+      .getDeductionList();
   }
 
   function renderDeductionTable() {
