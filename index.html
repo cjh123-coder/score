@@ -22,60 +22,25 @@
     .btn-orange { background-color: #f39c12; color: white; }
     .btn-purple { background-color: #9b59b6; color: white; width: 100%; font-size: 1.1rem; margin-top: 15px; }
     .row { margin: 15px 0; }
-    #progressContainer {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(255, 255, 255, 0.85); z-index: 2000;
-      flex-direction: column; justify-content: center; align-items: center;
-    }
-    .hourglass {
-      display: inline-block; position: relative; width: 64px; height: 64px;
-    }
-    .hourglass:after {
-      content: " "; display: block; border-radius: 50%; width: 0; height: 0;
-      margin: 8px; box-sizing: border-box; border: 26px solid #3498db;
-      border-color: #3498db transparent #3498db transparent;
-      animation: hourglass 1.2s infinite;
-    }
-    @keyframes hourglass {
-      0% { transform: rotate(0); animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
-      50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
-      100% { transform: rotate(1800deg); }
-    }
-    #progressBar {
-      margin-top: 15px; color: #3498db; font-weight: bold; font-size: 1.1rem; letter-spacing: 1px;
-    }
+    #progressContainer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; }
+    .hourglass { display: inline-block; position: relative; width: 64px; height: 64px; }
+    .hourglass:after { content: " "; display: block; border-radius: 50%; width: 0; height: 0; margin: 8px; box-sizing: border-box; border: 26px solid #3498db; border-color: #3498db transparent #3498db transparent; animation: hourglass 1.2s infinite; }
+    @keyframes hourglass { 0% { transform: rotate(0); animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); } 50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); } 100% { transform: rotate(1800deg); } }
+    #progressBar { margin-top: 15px; color: #3498db; font-weight: bold; font-size: 1.1rem; letter-spacing: 1px; }
     .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95rem; }
     .data-table th, .data-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
     .data-table th { background-color: #f8f9fa; }
     #alertOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; }
     #alertBox { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; text-align: center; min-width: 280px; }
-    .input-group { display: inline-flex; align-items: center; margin-right: 15px; }
-    .warning-text { color: #e74c3c; font-size: 0.9rem; font-weight: bold; margin-top: 5px; text-align: center; }
-    .switch-container { display: flex; align-items: center; justify-content: flex-start; margin-bottom: 12px; font-weight: bold; color: #2c3e50; font-size: 0.95rem; }
-    .toggle-switch { position: relative; display: inline-block; width: 46px; height: 24px; margin-right: 10px; }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 24px; }
-    .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-    input:checked + .toggle-slider { background-color: #22c55e; }
-    input:checked + .toggle-slider:before { transform: translateX(22px); }
-    .ans-col-toggle { transition: opacity 0.2s; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <h1 id="mainTitle">教師成績查詢系統</h1>
-
   <div id="alertOverlay"></div>
-  <div id="alertBox">
-    <div id="alertMsg"></div>
-    <button class="btn-blue" onclick="closeAlert()">確定</button>
-  </div>
-
-  <div id="progressContainer">
-    <div class="hourglass"></div>
-    <div id="progressBar">系統處理中...</div>
-  </div>
+  <div id="alertBox"><div id="alertMsg"></div><button class="btn-blue" onclick="closeAlert()">確定</button></div>
+  <div id="progressContainer"><div class="hourglass"></div><div id="progressBar">系統處理中...</div></div>
 
   <div id="teacherDashboard" class="section" style="display: none; border: 2px solid #27ae60; background-color: #fafffa;">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #27ae60; margin-bottom: 15px; padding-bottom: 5px;">
@@ -88,7 +53,6 @@
       您的登入權限為：<span id="userWelcomeRole" style="color: #f39c12;">讀取中</span>
     </div>
     
-    <!-- 你原本的查詢控制、表格等，保留在這裡 -->
     <div id="queryControlRow" class="row" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
       <div>
         <span style="font-weight:bold;">選擇查詢學期：</span>
@@ -107,18 +71,16 @@
           <option value="週考體育">週考體育</option>
         </select>
       </div>
+      <button class="btn-blue" onclick="loadScoreData()">🔍 查詢</button>
     </div>
 
     <div id="mainContentArea">
-      <!-- 成績內容 -->
-      <p style="color:#666;">成績資料載入中...</p>
+      <p style="color:#666;">請選擇學期與考試後按查詢...</p>
     </div>
   </div>
 </div>
 
 <script>
-// =====================================================================
-// 🛡️ 系統全域常數設定 (GitHub Pages 專用)
 // =====================================================================
   const urlParams = new URLSearchParams(window.location.search);
   const ssoToken = urlParams.get('token') || "";
@@ -160,37 +122,6 @@
     }
   };
 
-  // ✅ 關鍵修正：統一初始化 UI，解決 undefined 問題
-  function initDashboardUI() {
-    const raw = localStorage.getItem('sysUserData');
-    if (!raw) return false;
-    try {
-      const user = JSON.parse(raw);
-      console.log("載入使用者資料:", user);
-      const dashboard = document.getElementById('teacherDashboard');
-      const nameEl = document.getElementById('userWelcomeName');
-      const roleEl = document.getElementById('userWelcomeRole');
-
-      if (dashboard) dashboard.style.display = 'block';
-
-      // 兼容所有可能欄位名稱，解決 undefined
-      // 舊版可能是 displayName，新版可能是 name、teacherName、email
-      const displayName = user.displayName || user.name || user.teacherName || user.email || "老師";
-      const roleName = user.role || user.roleId || user.ssoRoleId || "teacher";
-
-      if (nameEl) nameEl.textContent = displayName;
-      if (roleEl) roleEl.textContent = roleName;
-
-      // 如果你原本有載入學期、考試等邏輯，保留在這裡
-      if (typeof loadInitialData === 'function') loadInitialData();
-
-      return true;
-    } catch(e) {
-      console.error("解析 sysUserData 失敗:", e);
-      return false;
-    }
-  }
-
   function getCurrentAcademicTerm() {
     const now = new Date();
     const year = now.getFullYear() - 1911;
@@ -210,19 +141,105 @@
     `;
   }
 
-  function checkSSOStatus() {
-    const _url = new URL(window.location.href);
-    const localUserRaw = localStorage.getItem('sysUserData');
+  function closeAlert(){ document.getElementById('alertOverlay').style.display='none'; document.getElementById('alertBox').style.display='none'; }
+  function showAlert(msg){ document.getElementById('alertMsg').innerHTML=msg; document.getElementById('alertOverlay').style.display='block'; document.getElementById('alertBox').style.display='block'; }
 
+  // ✅ 修正1：初始化 UI，解決 undefined
+  function initDashboardUI() {
+    const raw = localStorage.getItem('sysUserData');
+    if (!raw) return false;
+    try {
+      const user = JSON.parse(raw);
+      console.log("使用者資料:", user);
+      const dashboard = document.getElementById('teacherDashboard');
+      if (dashboard) dashboard.style.display = 'block';
+      const nameEl = document.getElementById('userWelcomeName');
+      const roleEl = document.getElementById('userWelcomeRole');
+      const displayName = user.displayName || user.name || user.teacherName || user.email || "老師";
+      const roleName = user.role || user.roleId || "teacher";
+      if (nameEl) nameEl.textContent = displayName;
+      if (roleEl) roleEl.textContent = roleName;
+      return true;
+    } catch(e) { console.error(e); return false; }
+  }
+
+  // ✅ 修正2：初始化學年選單，解決你截圖中空白的問題
+  function initYearOptions() {
+    const yearSel = document.getElementById('viewYear');
+    if (!yearSel) return;
+    if (yearSel.options.length > 0) return; // 避免重複
+    const current = getCurrentAcademicTerm();
+    const savedYear = localStorage.getItem('sysYear') || current.year;
+    const savedSem = localStorage.getItem('sysSemester') || current.semester;
+    const savedExam = localStorage.getItem('sysExamType') || "第一次定期考";
+
+    for (let y = 108; y <= 115; y++) {
+      const opt = document.createElement('option');
+      opt.value = y.toString();
+      opt.textContent = y + "學年度";
+      yearSel.appendChild(opt);
+    }
+    yearSel.value = savedYear;
+    document.getElementById('viewSemester').value = savedSem;
+    document.getElementById('viewExamType').value = savedExam;
+  }
+
+  // ✅ 修正3：真正載入成績的函式
+  function loadScoreData() {
+    const year = document.getElementById('viewYear').value;
+    const semester = document.getElementById('viewSemester').value;
+    const examType = document.getElementById('viewExamType').value;
+    
+    if(!year){ showAlert("請選擇學年度"); return; }
+
+    localStorage.setItem('sysYear', year);
+    localStorage.setItem('sysSemester', semester);
+    localStorage.setItem('sysExamType', examType);
+
+    const contentArea = document.getElementById('mainContentArea');
+    contentArea.innerHTML = `<p style="color:#3498db;">🔄 正在載入 ${year}學年度第${semester}學期 ${examType}...</p>`;
+    document.getElementById('progressContainer').style.display = 'flex';
+
+    // 呼叫後端：先拿原始資料，再產生報表 (依你原本的邏輯)
+    // 如果你的後端有 compiled_reports 快取，可以直接呼叫 generateLiveReportHtml
+    google.script.run
+      .withSuccessHandler(function(result){
+        document.getElementById('progressContainer').style.display = 'none';
+        console.log("報表結果:", result);
+        if(result && result.success !== false) {
+          // 可能是 {html: "..."} 或直接是字串
+          const html = result.html || result;
+          if(html && html.length > 10){
+            contentArea.innerHTML = html;
+          } else {
+            contentArea.innerHTML = `<p style="color:#e67e22;">⚠️ ${year}學年度第${semester}學期 ${examType} 目前沒有編譯好的報表。<br>請確認試算表內有資料，或請管理員執行【編譯權限】與【批次儲存】。</p>`;
+          }
+        } else {
+          contentArea.innerHTML = `<p style="color:#e74c3c;">載入失敗：${result.message || '未知錯誤'}</p>`;
+        }
+      })
+      .withFailureHandler(function(err){
+        document.getElementById('progressContainer').style.display = 'none';
+        console.error(err);
+        contentArea.innerHTML = `<p style="color:#e74c3c;">❌ 伺服器連線異常：${err}<br><br>請按 F12 開啟 Console，看是否有 CORS 或 Session 錯誤。<br>常見原因：GAS 沒有重新部署新版本，或 Firebase 密鑰錯誤。</p>`;
+      })
+      .generateLiveReportHtml(year, semester, examType, "ALL_DASHBOARD", null);
+  }
+
+  function checkSSOStatus() {
+    const localUserRaw = localStorage.getItem('sysUserData');
     if (localUserRaw) {
       const lastActive = localStorage.getItem('sysLastActive');
       if (lastActive && (Date.now() - parseInt(lastActive, 10) > 5 * 60 * 1000)) {
         localStorage.clear();
-        showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已離線閒置超過 5 分鐘，系統已將您登出。<br>請重新登入以繼續使用。", true);
+        showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已離線閒置超過 5 分鐘，系統已將您登出。", true);
         return;
       }
-      console.log("SSO 狀態：已登入，正常載入系統...");
-      initDashboardUI(); // ✅ 修正：已登入時也要初始化
+      console.log("SSO 狀態：已登入");
+      initYearOptions();
+      initDashboardUI();
+      // 自動載入一次
+      setTimeout(loadScoreData, 300);
       return; 
     }
 
@@ -238,10 +255,7 @@
         .withSuccessHandler(function(res) {
           if (res.success) {
             let userData = res.userData;
-            // 確保一定有 displayName，避免 undefined
-            if (!userData.displayName) {
-              userData.displayName = userData.name || userData.email || "老師";
-            }
+            if (!userData.displayName) userData.displayName = userData.name || userData.email || "老師";
             localStorage.setItem('sysUserData', JSON.stringify(userData));
             if (res.sessionId) localStorage.setItem('sysSessionId', res.sessionId);
             localStorage.setItem('sysYear', currentTerm.year);
@@ -255,10 +269,8 @@
         })
         .withFailureHandler(function(err) {
           alert("伺服器連線異常：" + err);
-          window.location.replace(SSO_CENTER_URL + "?redirect=" + encodeURIComponent(CURRENT_APP_URL));
         })
         .verifySSOLogin(currentTerm.year, currentTerm.semester, ssoToken);
-
     } else {
       window.location.replace(SSO_CENTER_URL + "?redirect=" + encodeURIComponent(CURRENT_APP_URL));
     }
@@ -279,7 +291,6 @@
     checkSSOStatus();
   });
 
-  // 閒置偵測等... (保留你原本的)
   let idleTimer;
   const IDLE_TIMEOUT_MS = 5 * 60 * 1000; 
   function resetIdleTimer() {
@@ -288,7 +299,7 @@
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => {
       localStorage.clear();
-      showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已閒置超過 5 分鐘，系統基於安全考量已將您登出。<br>請重新登入以繼續使用。", true);
+      showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已閒置超過 5 分鐘，系統基於安全考量已將您登出。", true);
     }, IDLE_TIMEOUT_MS);
   }
   ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(event => {
