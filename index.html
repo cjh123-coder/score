@@ -407,13 +407,11 @@
       opt.textContent = `⭐ 導師班級：${userData.homeroomClass} (觀看全班成績單)`;
       selectElement.appendChild(opt);
 
-      // 新增：自動為導師班級建立所有單科詳細報表的選項
-      allowedSubjects.forEach(sub => {
-        const subOpt = document.createElement('option');
-        subOpt.value = `${userData.homeroomClass}_${sub}`;
-        subOpt.textContent = `⭐ 導師單科報表：${userData.homeroomClass} 班 — ${sub}`;
-        selectElement.appendChild(subOpt);
-      });
+      // 變更：改為單一「班級單科報表看板」選項，點入後再由後端動態產生有成績的按鈕
+      const singleDashOpt = document.createElement('option');
+      singleDashOpt.value = `HOMEROOM_SUBJECTS_${userData.homeroomClass}`;
+      singleDashOpt.textContent = `⭐ 導師單科報表看板：${userData.homeroomClass} 班`;
+      selectElement.appendChild(singleDashOpt);
     }
     if (userData.classes && userData.classes.length > 0) {
       let teacherSubjects = {};
