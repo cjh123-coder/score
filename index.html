@@ -412,6 +412,12 @@
       singleDashOpt.value = `HOMEROOM_SUBJECTS_${userData.homeroomClass}`;
       singleDashOpt.textContent = `⭐ 導師單科報表看板：${userData.homeroomClass} 班`;
       selectElement.appendChild(singleDashOpt);
+
+      // 👇 這是這次新增的：全科報表看板選項
+      const allSubjectsDashOpt = document.createElement('option');
+      allSubjectsDashOpt.value = `HOMEROOM_ALL_SUBJECTS_${userData.homeroomClass}`;
+      allSubjectsDashOpt.textContent = `⭐ 導師全科分數與排名：${userData.homeroomClass} 班`;
+      selectElement.appendChild(allSubjectsDashOpt);
     }
     if (userData.classes && userData.classes.length > 0) {
       let teacherSubjects = {};
