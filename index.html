@@ -399,14 +399,22 @@
     const selectElement = document.getElementById('viewClassSubject');
     selectElement.innerHTML = ''; 
 
+    const allowedSubjects = ['數學', '國文', '自然', '公民', '英語', '英聽', '社會', '健教', '體育', '歷史', '地理'];
+
     if (userData.role === 'homeroom' && userData.homeroomClass) {
       const opt = document.createElement('option');
       opt.value = `HOMEROOM_${userData.homeroomClass}`;
       opt.textContent = `⭐ 導師班級：${userData.homeroomClass} (觀看全班成績單)`;
       selectElement.appendChild(opt);
-    }
 
-    const allowedSubjects = ['數學', '國文', '自然', '公民', '英語', '英聽', '社會', '健教', '體育', '歷史', '地理'];
+      // 新增：自動為導師班級建立所有單科詳細報表的選項
+      allowedSubjects.forEach(sub => {
+        const subOpt = document.createElement('option');
+        subOpt.value = `${userData.homeroomClass}_${sub}`;
+        subOpt.textContent = `⭐ 導師單科報表：${userData.homeroomClass} 班 — ${sub}`;
+        selectElement.appendChild(subOpt);
+      });
+    }
     if (userData.classes && userData.classes.length > 0) {
       let teacherSubjects = {};
 
