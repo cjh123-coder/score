@@ -859,8 +859,7 @@
             fetch(GAS_API_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify(securePayload),
-              credentials: 'omit' // 💡 關鍵修補：強制清除 Cookie 夾帶，避免 Google 帳號衝突
+              body: JSON.stringify(securePayload)
             })
             .then(res => res.json())
             .then(result => {
