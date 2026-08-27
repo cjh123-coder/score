@@ -419,10 +419,26 @@
       allSubjectsDashOpt.textContent = `⭐ 導師全科分數與排名：${userData.homeroomClass} 班`;
       selectElement.appendChild(allSubjectsDashOpt);
     }
+
     if (userData.classes && userData.classes.length > 0) {
       let teacherSubjects = {};
 
+      // 💡 新增機制：自動擴充陣列，讓英語與英聽互相連動產生選單
+      let expandedClasses = [];
       userData.classes.forEach(clsTag => {
+        if (!expandedClasses.includes(clsTag)) expandedClasses.push(clsTag);
+        
+        if (clsTag.includes('_英語')) {
+          let listenTag = clsTag.replace('_英語', '_英聽');
+          if (!expandedClasses.includes(listenTag)) expandedClasses.push(listenTag);
+        } else if (clsTag.includes('_英聽')) {
+          let engTag = clsTag.replace('_英聽', '_英語');
+          if (!expandedClasses.includes(engTag)) expandedClasses.push(engTag);
+        }
+      });
+
+      // 💡 改用擴充後的 expandedClasses 來產生下拉選單
+      expandedClasses.forEach(clsTag => {
         if(clsTag === "ALL") return;
 
         if(clsTag.startsWith("DOMAIN_")) {
