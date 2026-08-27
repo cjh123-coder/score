@@ -446,17 +446,28 @@
         }
       });
 
-      for (let sub in teacherSubjects) {
+for (let sub in teacherSubjects) {
         let classesJoin = teacherSubjects[sub].join(',');
+        
+        // 1. 原本的戰情總表
         const optTeacherDash = document.createElement('option');
         optTeacherDash.value = `TEACHER_OVERVIEW_${sub}|${classesJoin}`;
         optTeacherDash.textContent = `👩‍🏫 ${sub} — 任教班級戰情總表`;
         optTeacherDash.style.fontWeight = 'bold';
         optTeacherDash.style.color = '#16a085';
+
+        // 2. 新增：任教班級的分數與排名
+        const optTeacherRanks = document.createElement('option');
+        optTeacherRanks.value = `TEACHER_STUDENT_RANKS_${sub}|${classesJoin}`;
+        optTeacherRanks.textContent = `🧑‍🎓 ${sub} — 任教班級分數與排名`;
+        optTeacherRanks.style.fontWeight = 'bold';
+        optTeacherRanks.style.color = '#e67e22';
         
         if (selectElement.options.length > 0 && selectElement.options[0].value.startsWith('HOMEROOM_')) {
+          selectElement.insertBefore(optTeacherRanks, selectElement.options[1]);
           selectElement.insertBefore(optTeacherDash, selectElement.options[1]);
         } else {
+          selectElement.insertBefore(optTeacherRanks, selectElement.firstChild);
           selectElement.insertBefore(optTeacherDash, selectElement.firstChild);
         }
       }
