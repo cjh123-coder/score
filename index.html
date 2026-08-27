@@ -101,6 +101,7 @@
           <option value="第一次定期考">第一次定期考</option>
           <option value="第二次定期考">第二次定期考</option>
           <option value="第三次定期考">第三次定期考</option>
+          <option value="週考自然">週考國文</option>
           <option value="週考自然">週考自然</option>
           <option value="週考英語">週考英語</option>
           <option value="週考數學">週考數學</option>
@@ -175,6 +176,7 @@
             <option value="第一次定期考">第一次定期考</option>
             <option value="第二次定期考">第二次定期考</option>
             <option value="第三次定期考">第三次定期考</option>
+            <option value="週考自然">週考國文</option>
             <option value="週考自然">週考自然</option>
             <option value="週考英語">週考英語</option>
             <option value="週考數學">週考數學</option>
@@ -541,7 +543,7 @@ for (let sub in teacherSubjects) {
     localStorage.removeItem('sysExamType');
     localStorage.removeItem('sysLastActive'); 
     
-    showTerminalScreen("✅ 您已安全登出", "您已超逾5分鐘未使用，系統已自動為您登出。<br>為確保資訊安全，請重新登入或關閉此分頁。", true);
+    showTerminalScreen("✅ 您已安全登出", "您已超逾10分鐘未使用，系統已自動為您登出。<br>為確保資訊安全，請重新登入或關閉此分頁。", true);
   }
 
   function fetchLiveReport() {
@@ -915,7 +917,7 @@ for (let sub in teacherSubjects) {
 
     if (localUser) {
       const lastActive = localStorage.getItem('sysLastActive');
-      if (lastActive && (Date.now() - parseInt(lastActive, 10) > 5 * 60 * 1000)) {
+      if (lastActive && (Date.now() - parseInt(lastActive, 10) > 10 * 60 * 1000)) {
         console.log("🔒 偵測到離線閒置已逾時，自動清除舊憑證...");
         localStorage.removeItem('sysUserData');
         localStorage.removeItem('sysYear');
@@ -924,7 +926,7 @@ for (let sub in teacherSubjects) {
         localStorage.removeItem('sysSessionId');
         localStorage.removeItem('sysLastActive');
         // 【修正】離線逾時不再跳轉到 script.google.com，直接顯示終端畫面，避免 拒絕連線
-        showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已離線閒置超過 5 分鐘，系統已將您登出。<br>請重新登入以繼續使用。", true);
+        showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已離線閒置超過 10 分鐘，系統已將您登出。<br>請重新登入以繼續使用。", true);
         return;
       }
       console.log("SSO 狀態：已登入，正常載入系統...");
@@ -967,7 +969,7 @@ for (let sub in teacherSubjects) {
   }
 
   let idleTimer;
-  const IDLE_TIMEOUT_MS = 5 * 60 * 1000; 
+  const IDLE_TIMEOUT_MS = 10 * 60 * 1000; 
 
   function resetIdleTimer() {
     if (!localStorage.getItem('sysUserData')) return;
@@ -975,7 +977,7 @@ for (let sub in teacherSubjects) {
     clearTimeout(idleTimer);
     
     idleTimer = setTimeout(() => {
-      console.log("系統偵測到閒置超過 5 分鐘，啟動強制登出程序...");
+      console.log("系統偵測到閒置超過 10 分鐘，啟動強制登出程序...");
       localStorage.removeItem('sysUserData');
       localStorage.removeItem('sysYear');
       localStorage.removeItem('sysSemester');
@@ -984,7 +986,7 @@ for (let sub in teacherSubjects) {
       localStorage.removeItem('sysLastActive'); 
       
       // 【v3 定版】閒置逾時也改手動按鈕，不自動跳轉
-      showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已閒置超過 5 分鐘，系統基於安全考量已將您登出。<br>請重新登入以繼續使用。", true);
+      showTerminalScreen("⏳ 閒置逾時，已自動登出", "您已閒置超過 10 分鐘，系統基於安全考量已將您登出。<br>請重新登入以繼續使用。", true);
     }, IDLE_TIMEOUT_MS);
   }
 
